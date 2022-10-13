@@ -42,6 +42,33 @@ void main() {
       expect(isLocationServiceEnabled, true);
     });
 
+    test('isBackgroundExecutionEnabled', () async {
+      debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+      var isBackgroundExecutionEnabled =
+          await Geolocator.isBackgroundExecutionEnabled();
+      expect(isBackgroundExecutionEnabled, true);
+
+      debugDefaultTargetPlatformOverride = TargetPlatform.android;
+      isBackgroundExecutionEnabled =
+          await Geolocator.isBackgroundExecutionEnabled();
+      expect(isBackgroundExecutionEnabled, false);
+
+      debugDefaultTargetPlatformOverride = TargetPlatform.macOS;
+      isBackgroundExecutionEnabled =
+          await Geolocator.isBackgroundExecutionEnabled();
+      expect(isBackgroundExecutionEnabled, false);
+
+      debugDefaultTargetPlatformOverride = TargetPlatform.windows;
+      isBackgroundExecutionEnabled =
+          await Geolocator.isBackgroundExecutionEnabled();
+      expect(isBackgroundExecutionEnabled, false);
+
+      debugDefaultTargetPlatformOverride = TargetPlatform.linux;
+      isBackgroundExecutionEnabled =
+          await Geolocator.isBackgroundExecutionEnabled();
+      expect(isBackgroundExecutionEnabled, false);
+    });
+
     test('getLastKnownPosition', () async {
       final position = await Geolocator.getLastKnownPosition();
 
@@ -135,6 +162,9 @@ class MockGeolocatorPlatform extends Mock
 
   @override
   Future<bool> isLocationServiceEnabled() => Future.value(true);
+
+  @override
+  Future<bool> isBackgroundExecutionEnabled() => Future.value(true);
 
   @override
   Future<Position> getLastKnownPosition({

@@ -42,6 +42,29 @@ class Geolocator {
   static Future<bool> isLocationServiceEnabled() =>
       GeolocatorPlatform.instance.isLocationServiceEnabled();
 
+  /// Enables or Disables (depending on the [enable] parameter)
+  /// background location fetching.
+  ///
+  /// **Currently works only on iOS. Do nothing on other platforms,
+  /// so it's safe to call it without platform checking.*
+  static Future<void> setBackgroundExecution(bool enable) async {
+    if (defaultTargetPlatform != TargetPlatform.iOS) return;
+
+    await GeolocatorPlatform.instance.setBackgroundExecution(enable);
+  }
+
+  /// Returns a [Future] indicating if location background fetching is enabled.
+  ///
+  ///*You can change it through the [setBackgroundExecution] method.
+  ///
+  /// **Note:** It always returns `false` for non iOS platforms,
+  /// as the [setBackgroundExecution] method works only on iOS.
+  static Future<bool> isBackgroundExecutionEnabled() {
+    if (defaultTargetPlatform != TargetPlatform.iOS) return Future.value(false);
+
+    return GeolocatorPlatform.instance.isBackgroundExecutionEnabled();
+  }
+
   /// Returns the last known position stored on the users device.
   ///
   /// On Android you can force the plugin to use the old Android
