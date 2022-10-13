@@ -70,6 +70,23 @@ abstract class GeolocatorPlatform extends PlatformInterface {
     );
   }
 
+  /// Enables or Disables (depending on the [enable] parameter)
+  /// background location fetching.
+  Future<void> setBackgroundExecution(bool enable) async {
+    throw UnimplementedError(
+      'setBackgroundExecution() has not been implemented.',
+    );
+  }
+
+  /// Returns a [Future] indicating if location background fetching is enabled.
+  ///
+  /// **You can change it through the [setBackgroundExecution] method.*
+  Future<bool> isBackgroundExecutionEnabled() {
+    throw UnimplementedError(
+      'isBackgroundExecutionEnabled() has not been implemented.',
+    );
+  }
+
   /// Returns the last known position stored on the users device.
   ///
   /// On Android you can force the plugin to use the old Android

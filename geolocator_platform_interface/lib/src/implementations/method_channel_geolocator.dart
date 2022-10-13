@@ -70,6 +70,15 @@ class MethodChannelGeolocator extends GeolocatorPlatform {
       .then((value) => value ?? false);
 
   @override
+  Future<void> setBackgroundExecution(bool enable) async =>
+      _methodChannel.invokeMethod('setBackgroundExecution', {'enable': enable});
+
+  @override
+  Future<bool> isBackgroundExecutionEnabled() async => _methodChannel
+      .invokeMethod('isBackgroundExecutionEnabled')
+      .then((value) => value ?? false);
+
+  @override
   Future<Position?> getLastKnownPosition({
     bool forceLocationManager = false,
   }) async {
