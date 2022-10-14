@@ -45,7 +45,7 @@ class Geolocator {
   /// Enables or Disables (depending on the [enable] parameter)
   /// background location fetching.
   ///
-  /// **Currently works only on iOS. Do nothing on other platforms,
+  /// **Currently works only on iOS. Does nothing on other platforms,
   /// so it's safe to call it without platform checking.*
   static Future<void> setBackgroundExecution(bool enable) async {
     if (defaultTargetPlatform != TargetPlatform.iOS) return;
