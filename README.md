@@ -1,23 +1,36 @@
 # Flutter geolocator plugin
 
-The Flutter geolocator plugin is built following the federated plugin architecture. A detailed explanation of the federated plugin concept can be found in the [Flutter documentation](https://flutter.dev/docs/development/packages-and-plugins/developing-packages#federated-plugins). This means the geolocator plugin is separated into the following packages:
+This repository forked from the [geolocator plugin][1] created by [Baseflow][2] at the `8.0.3` version, but with **two methods added**:
+1) [`setBackgroundExecution`][3] - to enable/disable (depending on its `enable` parameter) background location fetching. *Currently works only on iOS. This method does nothing on other platforms. On Android maybe you wish to use the [`foreground services`][4] to be able to continue fetching locations in background.*
+2) [`isBackgroundExecutionEnabled`][5] - to check if background location fetching is enabled. *As the [`setBackgroundExecution`][3] works only on iOS, so it always returns `false` for non iOS platforms.*
 
-1. [`geolocator`][1]: the app facing package. This is the package users depend on to use the plugin in their project. For details on how to use the [`geolocator`][1] plugin you can refer to its [README.md][2] file.
-2. [`geolocator_android`][3]: this package contains the endorsed Android implementation of the geolocator_platform_interface and adds Android support to the [`geolocator`][1] app facing package. More information can be found in its [README.md][4] file;
-2. [`geolocator_apple`][5]: this package contains the endorsed iOS and macOS implementations of the geolocator_platform_interface and adds iOS and macOS support to the [`geolocator`][1] app facing package. More information can be found in its [README.md][6] file;
-2. [`geolocator_web`][7]: this package contains the endorsed web implementation of the geolocator_platform_interface and adds web support to the [`geolocator`][1] app facing package. More information can be found in its [README.md][8] file;
-2. [`geolocator_windows`][9]: this package contains the endorsed Windows implementation of the geolocator_platform_interface and adds Windows support to the [`geolocator`][1] app facing package. More information can be found in its [README.md][10] file;
-3. [`geolocator_platform_interface`][11]: this package declares the interface which all platform packages must implement to support the app-facing package. Instructions on how to implement a platform package can be found in the [README.md][12] of the [`geolocator_platform_interface`][11] package.
+<br />
 
-[1]: ./geolocator
-[2]: ./geolocator/README.md
-[3]: ./geolocator_android
-[4]: ./geolocator_android/README.md
-[5]: ./geolocator_apple
-[6]: ./geolocator_apple/README.md
-[7]: ./geolocator_web
-[8]: ./geolocator_web/README.md
-[9]: ./geolocator_windows
-[10]: ./geolocator_windows/README.md
-[11]: ./geolocator_platform_interface
-[12]: ./geolocator_platform_interface/README.md
+To be able to use the [`setBackgroundExecution`][3] method you must add the `location` value to the [`UIBackgroundModes`][6] array inside the `Info.plist` file. It can be done in two ways:
+
+1) **Using Xcode**
+
+Open your project with Xcode, then navigate to the `Signing & Capabilities` of your app target and make sure the `Location updates` is enabled as shown in the image below:
+
+![image](https://docs-assets.developer.apple.com/published/9cba7a007f/5108b1a8-8cd2-4b56-83d9-09f8e9fa1ee7.png)
+
+
+
+
+2) **Manually**
+
+Open the `Info.plist` file (*path: `{your_project}/ios/Runner/Info.plist`*), then scroll down to the `UIBackgroundModes` array and add the `location` value as shown in the image below:
+
+<img width="344" alt="Screen Shot 2022-10-17 at 16 23 21" src="https://user-images.githubusercontent.com/75716994/196155584-a657d977-b67f-4425-a498-42bdbc3c13ff.png">
+
+<br />
+
+***Important:*** Calling the [`setBackgroundExecution`][3] method on iOS without the `Location updates` enabled as shown above - will crash your app!
+
+
+[1]: https://github.com/Baseflow/flutter-geolocator
+[2]: https://github.com/Baseflow
+[3]: ./geolocator/lib/geolocator.dart#L49
+[4]: https://developer.android.com/guide/components/foreground-services
+[5]: ./geolocator/lib/geolocator.dart#L61
+[6]: https://developer.apple.com/documentation/bundleresources/information_property_list/uibackgroundmodes
