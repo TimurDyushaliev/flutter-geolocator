@@ -88,6 +88,12 @@
   } else if ([@"isLocationServiceEnabled" isEqualToString:call.method]) {
     BOOL isEnabled = [CLLocationManager locationServicesEnabled];
     result([NSNumber numberWithBool:isEnabled]);
+  } else if ([@"setBackgroundExecution" isEqualToString:call.method]) {
+    BOOL* shouldEnable = (BOOL) call.arguments[@"enable"];
+    [self onSetBackgroundExecution:result shouldEnable:shouldEnable];
+  } else if ([@"isBackgroundExecutionEnabled" isEqualToString:call.method]) {
+    BOOL isEnabled = [[self createGeolocationHandler] isBackgroundExecutionEnabled];
+    result([NSNumber numberWithBool:isEnabled]);
   } else if ([@"getLastKnownPosition" isEqualToString:call.method]) {
     [self onGetLastKnownPosition:result];
   } else if ([@"getCurrentPosition" isEqualToString:call.method]) {
@@ -124,6 +130,19 @@
                                details: nil]);
   }];
 }
+
+- (void)onSetBackgroundExecution:(FlutterResult)result
+                    shouldEnable:(BOOL)shouldEnable {
+      if (![[self createPermissionHandler] hasPermission]) {
+    result([FlutterError errorWithCode: GeolocatorErrorPermissionDenied
+                               message:@"User denied permissions to access the device's location."
+                               details:nil]);
+    return;
+  }
+
+  [[self createGeolocationHandler] setBackgroundExecution:shouldEnable];
+  result(nil);
+} 
 
 - (void)onGetLastKnownPosition:(FlutterResult)result {
   if (![[self createPermissionHandler] hasPermission]) {

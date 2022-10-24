@@ -450,6 +450,70 @@ void main() {
       });
     });
 
+    group(
+      'isBackgroundExecutionEnabled: When requesting for background execution status',
+      () {
+        test('Should receive true if background execution is enabled',
+            () async {
+          // Arrange
+          MethodChannelMock(
+            channelName: 'flutter.baseflow.com/geolocator_apple',
+            method: 'isBackgroundExecutionEnabled',
+            result: true,
+          );
+
+          // Act
+          final isBackgroundExecutionEnabled =
+              await GeolocatorApple().isBackgroundExecutionEnabled();
+
+          // Assert
+          expect(
+            isBackgroundExecutionEnabled,
+            true,
+          );
+        });
+
+        test('Should receive false if background execution is disabled',
+            () async {
+          // Arrange
+          MethodChannelMock(
+            channelName: 'flutter.baseflow.com/geolocator_apple',
+            method: 'isBackgroundExecutionEnabled',
+            result: false,
+          );
+
+          // Act
+          final isBackgroundExecutionEnabled =
+              await GeolocatorApple().isBackgroundExecutionEnabled();
+
+          // Assert
+          expect(
+            isBackgroundExecutionEnabled,
+            false,
+          );
+        });
+      },
+    );
+
+    test('Should receive false if background execution is disabled', () async {
+      // Arrange
+      MethodChannelMock(
+        channelName: 'flutter.baseflow.com/geolocator',
+        method: 'isBackgroundExecutionEnabled',
+        result: false,
+      );
+
+      // Act
+      final isBackgroundExecutionEnabled =
+          await GeolocatorApple().isBackgroundExecutionEnabled();
+
+      // Assert
+      expect(
+        isBackgroundExecutionEnabled,
+        false,
+      );
+    });
+
     group('getLastKnownPosition: When requesting the last know position', () {
       test('Should receive a position if permissions are granted', () async {
         // Arrange

@@ -104,9 +104,6 @@ double const kMaxLocationLifeTimeInSeconds = 5.0;
   }
   
 #if TARGET_OS_IOS
-  if (@available(iOS 9.0, macOS 11.0, *)) {
-    locationManager.allowsBackgroundLocationUpdates = [GeolocationHandler shouldEnableBackgroundLocationUpdates];
-  }
   if (@available(iOS 11.0, macOS 11.0, *)) {
     locationManager.showsBackgroundLocationIndicator = showBackgroundLocationIndicator;
   }
@@ -120,6 +117,16 @@ double const kMaxLocationLifeTimeInSeconds = 5.0;
   self.isListeningForPositionUpdates = NO;
   self.errorHandler = nil;
   self.listenerResultHandler = nil;
+}
+
+- (void)setBackgroundExecution:(BOOL)shouldEnable {
+  if (@available(iOS 9.0, *)) {
+    [self getLocationManager].allowsBackgroundLocationUpdates = shouldEnable;
+  }
+}
+
+- (BOOL)isBackgroundExecutionEnabled {
+  return [self getLocationManager].allowsBackgroundLocationUpdates;
 }
 
 - (void)locationManager:(CLLocationManager *)manager
@@ -166,14 +173,6 @@ double const kMaxLocationLifeTimeInSeconds = 5.0;
   self.currentLocationResultHandler = nil;
   if (!self.isListeningForPositionUpdates) {
     [self stopListening];
-  }
-}
-
-+ (BOOL) shouldEnableBackgroundLocationUpdates {
-  if (@available(iOS 9.0, *)) {
-    return [[NSBundle.mainBundle objectForInfoDictionaryKey:@"UIBackgroundModes"] containsObject: @"location"];
-  } else {
-    return NO;
   }
 }
 @end
