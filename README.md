@@ -1,6 +1,6 @@
 # Flutter geolocator plugin
 
-This repository forked from the [geolocator plugin][1] created by [Baseflow][2] at the `8.0.3` version, but with **two methods added**:
+This repository forked from the [geolocator plugin][1] created by [Baseflow][2], but with **two methods added**:
 1) [`setBackgroundExecution`][3] - to enable/disable (depending on its `enable` parameter) background location fetching. *Currently works only on iOS. This method does nothing on other platforms. On Android maybe you wish to use the [`foreground services`][4] to be able to continue fetching locations in background.*
 2) [`isBackgroundExecutionEnabled`][5] - to check if background location fetching is enabled. *As the [`setBackgroundExecution`][3] works only on iOS, so it always returns `false` for non iOS platforms.*
 
