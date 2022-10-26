@@ -495,25 +495,6 @@ void main() {
       },
     );
 
-    test('Should receive false if background execution is disabled', () async {
-      // Arrange
-      MethodChannelMock(
-        channelName: 'flutter.baseflow.com/geolocator',
-        method: 'isBackgroundExecutionEnabled',
-        result: false,
-      );
-
-      // Act
-      final isBackgroundExecutionEnabled =
-          await GeolocatorApple().isBackgroundExecutionEnabled();
-
-      // Assert
-      expect(
-        isBackgroundExecutionEnabled,
-        false,
-      );
-    });
-
     group('getLastKnownPosition: When requesting the last know position', () {
       test('Should receive a position if permissions are granted', () async {
         // Arrange
